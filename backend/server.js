@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import cors from "cors";
+//import cors from "cors";
 import authRoute from "./routes/auth.routes.js"
 import mongoCon from "./db/mongoConnect.js";
 import insertSampleData from "./db/createSamUser.js"
@@ -13,12 +13,10 @@ const app = express();
 
 dotenv.config();
 
+const cors = require('cors');
 app.use(cors({
-  origin: "*",
-  methods:["POST","GET"],
-  credentials:true
+    origin: '*'
 }));
-
 
 app.use(express.json());
 
