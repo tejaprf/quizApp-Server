@@ -2,7 +2,7 @@ import express from "express";
 import session from 'express-session';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
-import { User } from "../models/user.model.js";
+import { User,UserProfile } from "../models/user.model.js";
 
 
 const router=express.Router();
@@ -183,8 +183,52 @@ router.get('/signout', (req, res) => {
 // router.get('/logout',logout);
 
 
+async function insertUserProfile(user) {
+    try {
+        // Retrieve topics data
+        const topics_dat = await Topic.find();
 
-router.post('/signup',async (req,res)=>{
+        // Initialize user profile object
+        const profile = {
+            email: user.email,
+            username: user.username,
+            currentLevel: 1,
+            stageCleared: false,
+            topics: []
+        };
+
+        // Generate topics data for the user
+        for (const top of topics_dat) {
+            const topic = {
+                topicName: top.topicName,
+                gemEarned: false,
+                levels: []
+            };
+
+                // Generate quiz scores for each level
+                const curScore = generateQuizScores(k, profile.currentLevel);
+                // Push level data into topic levels array
+                topic.levels.push({
+                    levelId: k,
+                    quizId: k, // Replace this with your logic to generate quiz IDs
+                    score: curScore
+                });
+
+            // Push topic data into user's topics array
+            profile.topics.push(topic);
+        }
+
+        // Create and save the user profile
+        const newUserProfile = new UserProfile(profile);
+        await newUserProfile.save();
+        console.log('User profile inserted successfully.');
+    } catch (error) {
+        console.error('Error inserting user profile:', error);
+    }
+}
+
+
+export const signup=async (req,res)=>{
     
     console.log('Signup done. Data received');
     // console.log(req.body);
@@ -199,15 +243,13 @@ router.post('/signup',async (req,res)=>{
         school: formData.school
     };
     try{
-        const user=await User.findOne({email:userData.email});
-        if(!user)
         await User.create(userData);
-        else
-        res.send('User exists');
+        await insertUserProfile(userData);
     }catch(err){
         console.log("User not added",err);
     }
 
-});          
+}
+
 
 export default router;
