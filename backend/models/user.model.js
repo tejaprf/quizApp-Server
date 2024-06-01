@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 // Users schema
 const userSchema = new Schema({
     email: { type: String, required: true, unique: true },
-    username: { type: String, required: true,unique:true },
+    username: { type: String, required: true },
     passwordHash: { type: String, required: true },
     contact: { type: String, required: true },
     city: { type: String, required: true },
@@ -20,7 +20,7 @@ const User = mongoose.model('User', userSchema);
 //User profile schema
 const userProfileSchema = new Schema({
     email: { type: String, unique: true }, // Reference to the user
-    username:{type:String, unique:true},
+    username:{type:String, required:true},
     currentLevel: { type: Number,required:true}, // Reference to the current level of the user
     stageCleared:{type:Boolean,required:true},
     topics: [{
@@ -57,7 +57,7 @@ const Topic = mongoose.model('Topic', topicSchema);
 
 // UserScores schema
 const userScoreSchema = new Schema({
-    quizId: { type: Number, required: true,unique:true },
+    quizId: { type: Number, required: true },
     email: { type: String, required: true },
     username:{type:String,required:true},
     score: { type: Number, required: true },
@@ -72,7 +72,7 @@ const UserScore = mongoose.model('UserScore', userScoreSchema);
 // Leaderboards schema
 const leaderboardSchema = new Schema({
     email: { type: String, required: true,unique:true },
-    username:{type:String, required:true,unique:true},
+    username:{type:String, required:true},
     totalScore: { type: Number, required: true },
     rank: { type: Number }
 });
