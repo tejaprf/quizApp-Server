@@ -14,7 +14,7 @@ const app = express();
 dotenv.config();
 
 app.use(cors({
-  origin: "https://quizapp-fend.onrender.com",
+  origin: "*",
   methods:["POST","GET"],
   credentials:true
 }));
