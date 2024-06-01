@@ -228,7 +228,7 @@ async function insertUserProfile(user) {
 }
 
 
-export const signup=async (req,res)=>{
+const signup=async (req,res)=>{
     
     console.log('Signup done. Data received');
     // console.log(req.body);
@@ -245,11 +245,14 @@ export const signup=async (req,res)=>{
     try{
         await User.create(userData);
         await insertUserProfile(userData);
+        res.json('Signup Successfull');
     }catch(err){
         console.log("User not added",err);
     }
 
 }
 
+
+router.post('/signup',signup);
 
 export default router;
