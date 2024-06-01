@@ -12,12 +12,13 @@ import callBackRoute from "./routes/callback.routes.js";
 const app = express();
 
 dotenv.config();
-app.use(cors());
+
 app.use(cors({
-  origin: 'https://quizapp-fend.onrender.com'
+  origin: "https://quizapp-fend.onrender.com",
+  methods:["POST","GET"],
+  credentials:true
 }));
 
-app.options('*', cors());
 
 app.use(express.json());
 
