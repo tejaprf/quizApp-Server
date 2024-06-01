@@ -2,7 +2,7 @@ import express from "express";
 import session from 'express-session';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
-import { User,UserProfile } from "../models/user.model.js";
+import { User,UserProfile,Topic } from "../models/user.model.js";
 
 
 const router=express.Router();
@@ -183,6 +183,37 @@ router.get('/signout', (req, res) => {
 // router.get('/logout',logout);
 
 
+
+// router.post('/signup',async (req,res)=>{
+    
+//     console.log('Signup done. Data received');
+//     // console.log(req.body);
+//     const formData=req.body;
+//     const userData = {
+//         email: formData.email,
+//         passwordHash: formData.password,
+//         username: formData.fullName,
+//         age: formData.age,
+//         contact: formData.contact,
+//         city: formData.city,
+//         school: formData.school
+//     };
+//     try{
+//         const user=await User.findOne({email:userData.email});
+//         if(!user)
+//         await User.create(userData);
+//         else
+//         res.send('User exists');
+//     }catch(err){
+//         console.log("User not added",err);
+//     }
+
+// });          
+
+// export default router;
+
+
+
 async function insertUserProfile(user) {
     try {
         // Retrieve topics data
@@ -206,11 +237,11 @@ async function insertUserProfile(user) {
             };
 
                 // Generate quiz scores for each level
-                const curScore = generateQuizScores(k, profile.currentLevel);
+                const curScore = 0;
                 // Push level data into topic levels array
                 topic.levels.push({
-                    levelId: k,
-                    quizId: k, // Replace this with your logic to generate quiz IDs
+                    levelId: 1,
+                    quizId: 1, // Replace this with your logic to generate quiz IDs
                     score: curScore
                 });
 
@@ -226,7 +257,6 @@ async function insertUserProfile(user) {
         console.error('Error inserting user profile:', error);
     }
 }
-
 
 const signup=async (req,res)=>{
     
@@ -245,7 +275,7 @@ const signup=async (req,res)=>{
     try{
         await User.create(userData);
         await insertUserProfile(userData);
-        res.json('Signup Successfull');
+        res.json('Signup successfull');
     }catch(err){
         console.log("User not added",err);
     }
